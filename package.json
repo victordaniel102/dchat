@@ -1,0 +1,26 @@
+{
+  "name": "socket.io-chat",
+  "version": "1.0.0",
+  "description": "Chat em tempo real com socket.io",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^1.19.1",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victordaniel102/socket.io-chat.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/victordaniel102/socket.io-chat/issues"
+  },
+  "homepage": "https://github.com/victordaniel102/socket.io-chat#readme"
+}
