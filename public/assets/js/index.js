@@ -3,10 +3,12 @@ var ready = false;
 
 const form = document.querySelector('.form-username');
 const formMessage = document.querySelector('.form-message');
+const formBoxTxt = document.querySelector('.form-message>input');
 const modal = document.querySelector('.modal');
 const headerUsername = document.querySelector('.header-username');
 const headerTime = document.querySelector('.header-time');
 const bodyMessages = document.querySelector('.body');
+const userTyping = document.querySelector('.user-typing');
 
 form.addEventListener('submit', function(e) {
     e.preventDefault();
@@ -44,11 +46,21 @@ formMessage.addEventListener('submit', function(e) {
         bodyMessages.appendChild(msgContainerOwn);
         $('.body').scrollTop($('.body')[0].scrollHeight);
 
-        socket.emit('send', msg);
+        socket.emit('msg', msg);
     }
 })
 
-socket.on('join', (name) => {
+$('.form-message').keydown(function(key) {
+    if(ready) {
+        if(key.keyCode == 8) {
+            socket.emit('deleting');
+        } else {
+            socket.emit('typing');
+        }
+    }
+})
+
+socket.on('user join', (name) => {
     if (ready) {
         let divSpanAlert = document.createElement('div');
         divSpanAlert.className = 'span-alert';
@@ -62,7 +74,7 @@ socket.on('join', (name) => {
     }
 })
 
-socket.on('logout', (name) => {
+socket.on('user disconnect', (name) => {
     if (ready) {
         let divSpanAlert = document.createElement('div');
         divSpanAlert.className = 'span-alert';
@@ -77,9 +89,11 @@ socket.on('logout', (name) => {
 })
 
 
-socket.on('msg', (user, msg) => {
+socket.on('user msg', (user, msg) => {
     if (ready) {
         var time = new Date();
+        userTyping.textContent = "";
+        formBoxTxt.className = "";
 
         let msgContainernOwn = document.createElement('div');
         let msgnOwn = document.createElement('div');
@@ -111,5 +125,19 @@ socket.on('msg', (user, msg) => {
         bodyMessages.appendChild(msgContainernOwn);
 
         $('.body').scrollTop($('.body')[0].scrollHeight);
+    }
+})
+
+socket.on('user typing', (user) => {
+    if (ready) {
+        userTyping.textContent = user + " está digitando...";
+        formBoxTxt.className = "typing";
+    }
+})
+
+socket.on('user deleting', () => {
+    if (ready) {
+        userTyping.textContent = "";
+        formBoxTxt.className = "";
     }
 })

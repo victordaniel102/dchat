@@ -100,7 +100,7 @@ body {
 .span-alert > p {
     padding: 10px;
     background-color: #FFF;
-    border-radius: 1px;
+    border-radius: 2px;
     box-shadow: 0px 3px 5px -3px rgba(0,0,0,0.75);
     margin: 10px 0;
 }
@@ -185,6 +185,11 @@ body {
     padding: 15px;
     flex-grow: 1;
     box-shadow: 0px 3px 5px -3px rgba(0,0,0,0.75);
+    transition: 0.2s;
+}
+
+.form-message > input.typing {
+    border-radius: 0 50px 50px;
 }
 
 .btn-submit {
@@ -200,6 +205,11 @@ body {
     align-items: center;
     margin-left: 20px;
     right: 0;
+}
+
+.user-typing {
+    color: #a3a3a3;
+    margin-bottom: 5px;
 }
 
 ::-webkit-scrollbar-track {
