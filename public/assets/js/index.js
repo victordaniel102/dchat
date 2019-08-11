@@ -15,7 +15,8 @@ form.addEventListener('submit', function(e) {
     var time = new Date();
 
     headerUsername.textContent = name;
-    headerTime.textContent = "Entrada: " + time.getHours() + ":" + time.getMinutes();
+    if (time.getMinutes() < 10) headerTime.textContent = "Entrada: " + time.getHours() + ":0" + time.getMinutes();
+    else headerTime.textContent = "Entrada: " + time.getHours() + ":" + time.getMinutes();
 
     modal.style.display = "none";
     ready = true;
@@ -93,7 +94,10 @@ socket.on('msg', (user, msg) => {
         pMsgUser.className = "msg-user";
         pMsgUser.textContent = user;
         pMsgTime.className = "msg-time";
-        pMsgTime.textContent = time.getHours() + ":" + time.getMinutes();
+
+        if (time.getMinutes() < 10) pMsgTime.textContent = time.getHours() + ":0" + time.getMinutes();
+        else pMsgTime.textContent = time.getHours() + ":" + time.getMinutes();
+        
         pMsgText.className = "msg-text";
         pMsgText.textContent = msg;
 
