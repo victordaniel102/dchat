@@ -1,2 +1,1 @@
-# socket.io-chat
-Chat em tempo real com socket.io
+#  Chat com Socket.io
