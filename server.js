@@ -5,10 +5,9 @@ var app = express();
 
 var users = {};
 
-var server = app.listen(3000, function(){
-	console.log('Server is running on port 3000...');
+var server = app.listen(process.env.PORT || 3000, function(){
+	console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
 });
-
 app.use(express.static('public'));
 
 var io = socket(server);
