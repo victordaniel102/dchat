@@ -5,10 +5,12 @@ const form = document.querySelector('.form-username');
 const formMessage = document.querySelector('.form-message');
 const formBoxTxt = document.querySelector('.form-message>input');
 const modal = document.querySelector('.modal');
-const headerUsername = document.querySelector('.header-username');
-const headerTime = document.querySelector('.header-time');
+const headerUsername = document.querySelector('.sidebar-header-username');
+const headerTime = document.querySelector('.sidebar-header-time');
 const bodyMessages = document.querySelector('.body');
 const userTyping = document.querySelector('.user-typing');
+const userList = document.querySelector('.sidebar-body-users');
+const userLen = document.querySelector('.header-status');
 
 form.addEventListener('submit', function(e) {
     e.preventDefault();
@@ -141,3 +143,23 @@ socket.on('user deleting', () => {
         formBoxTxt.className = "";
     }
 })
+
+socket.on('users update', (users) => {
+    if (ready) {
+        let i = 0;
+        userList.textContent = "";
+        for (user in users) {
+            updateUsers(users[user]);
+            i++;
+        }
+        if (i == 1) userLen.textContent = i + ' usuário';
+        else userLen.textContent = i + ' usuários';
+    }
+})
+
+const updateUsers = (user) => {
+    let pUser = document.createElement('p');
+    pUser.textContent = user;
+
+    userList.appendChild(pUser);
+}

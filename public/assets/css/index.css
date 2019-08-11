@@ -20,6 +20,8 @@ body {
     height: 100vh;
 }
 
+/* MODAL */
+
 .modal {
     width: 100vw;
     height: 100vh;
@@ -48,32 +50,103 @@ body {
 }
 
 .container {
-    width: 800px;
+    width: 1200px;
     height: 600px;
     background-color: #f3f3f3;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    box-shadow: 0px 3px 5px -3px rgba(0,0,0,0.75);
+}
+
+.chatbar {
+    flex-grow: 1;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
 }
 
-.container > .header {
+.sidebar {
+    width: 300px;
+    background-color: #FFF;
+    z-index: 1;
+}
+
+.sidebar-header {
+    background-color: #EFEFEF;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 15px;
+}
+
+.sidebar-header > img {
+    width: 40px;
+    border-radius: 100%;
+}
+
+.sidebar-body > p {
+    color: green;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.sidebar-body-users > p {
+    background: #f5f5f5;
+    width: 100%;
+    padding: 15px 20px;
+    border-bottom: 1px solid #EFEFEF;
+    color: #555;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.sidebar-body-users > p:hover {
+    background-color: #e9d5ff;
+}
+
+.sidebar-header > div {
+    margin-left: 15px;
+}
+
+.sidebar-header-username {
+    font-size: 18px;
+    color: #444444;
+}
+
+.sidebar-header-time {
+    font-size: 14px;
+    color: #cccccc;
+}
+
+
+
+/* HEADER */
+
+.header {
     width: 100%;
     padding: 15px 25px;
     background-color: #8141ca;
     display: flex;
     justify-content: flex-start;
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
     color: white;
-    box-shadow: 0px 3px 5px -3px rgba(0,0,0,0.75);
+    /* box-shadow: 0px 3px 5px -3px rgba(0,0,0,0.75); */
     z-index: 1 !important;
 }
 
-.container > .header > .header-username {
+.header > img {
+    width: 40px;
+    border-radius: 100%;
+    margin-right: 20px;
+}
+
+.header-title {
     font-size: 18px;
 }
 
-.container > .header > .header-time {
+.header-status {
     font-size: 14px;
     color: #cccccc;
 }
@@ -101,7 +174,7 @@ body {
     padding: 10px;
     background-color: #FFF;
     border-radius: 2px;
-    box-shadow: 0px 3px 5px -3px rgba(0,0,0,0.75);
+    /* box-shadow: 0px 3px 5px -3px rgba(0,0,0,0.75); */
     margin: 10px 0;
 }
 
@@ -184,7 +257,7 @@ body {
     border: none;
     padding: 15px;
     flex-grow: 1;
-    box-shadow: 0px 3px 5px -3px rgba(0,0,0,0.75);
+    /* box-shadow: 0px 3px 5px -3px rgba(0,0,0,0.75); */
     transition: 0.2s;
 }
 
@@ -197,7 +270,7 @@ body {
     height: 46px;
     border-radius: 100%;
     background-color: #8141ca;
-    box-shadow: 0px 3px 5px -3px rgba(0,0,0,0.75);
+    /* box-shadow: 0px 3px 5px -3px rgba(0,0,0,0.75); */
     border: none;
     color: white;
     display: flex;

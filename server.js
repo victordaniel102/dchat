@@ -13,11 +13,13 @@ io.on('connection', (socket) => {
 	socket.on('join', (name) => {
 		users[socket.id] = name;
 		socket.broadcast.emit('user join', users[socket.id]);
+		io.emit('users update', users);
 	})
 
 	socket.on('disconnect', () => {
 		socket.broadcast.emit('user disconnect', users[socket.id]);
 		delete users[socket.id];
+		io.emit('users update', users);
 	})
 
 	socket.on("msg", (msg) => {
