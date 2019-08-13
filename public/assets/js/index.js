@@ -1,165 +1,132 @@
-var socket = io();
-var ready = false;
+(async () => {
+    var 
+    socket = io(),
+    ready = false;
 
-const form = document.querySelector('.form-username');
-const formMessage = document.querySelector('.form-message');
-const formBoxTxt = document.querySelector('.form-message>input');
-const modal = document.querySelector('.modal');
-const headerUsername = document.querySelector('.sidebar-header-username');
-const headerTime = document.querySelector('.sidebar-header-time');
-const bodyMessages = document.querySelector('.body');
-const userTyping = document.querySelector('.user-typing');
-const userList = document.querySelector('.sidebar-body-users');
-const userLen = document.querySelector('.header-status');
+    // templates
+    const 
+    { msgTemplate, signTemplate, msgTemplateOther } = await $.get("/template.json"),
 
-form.addEventListener('submit', function(e) {
-    e.preventDefault();
+    // format time
+    setTime = (format, time) => {
+        return `Entrada ${time.getHours() + format +  time.getMinutes()}`;
+    };
 
-    var name = form.username.value;
-    var time = new Date();
+    // ui events
+    $('.form-username').on('submit', e => {
+        e.preventDefault();
 
-    headerUsername.textContent = name;
-    if (time.getMinutes() < 10) headerTime.textContent = "Entrada: " + time.getHours() + ":0" + time.getMinutes();
-    else headerTime.textContent = "Entrada: " + time.getHours() + ":" + time.getMinutes();
+        let 
+        name = $(e.target.username).val(),
+        time = new Date();
 
-    modal.style.display = "none";
-    ready = true;
-    socket.emit("join", name);
-})
+        $('.sidebar-header-username').text(name);
 
-formMessage.addEventListener('submit', function(e) {
-    e.preventDefault()
+        let 
+        signTime = time.getMinutes() < 10 
+        ? setTime(":0", time)
+        : setTime(":", time);
 
-    var msg = formMessage.txtMsg.value;
-    if (msg.length != 0) {
-        formMessage.txtMsg.value = "";
+        $('.sidebar-header-time').text(signTime);
+        $('.modal').remove();
 
-        let msgContainerOwn = document.createElement('div');
-        let msgOwn = document.createElement('div');
-        let pMsgText = document.createElement('p');
+        ready = true;
+        socket.emit("join", name);
+    });
 
-        msgContainerOwn.className = "msg-container own";
-        msgOwn.className = "msg own";
-        pMsgText.className = "msg-text";
-        pMsgText.textContent = msg;
+    $('.form-message').on('submit', e => {
+        e.preventDefault();
 
-        msgOwn.appendChild(pMsgText);
-        msgContainerOwn.appendChild(msgOwn);
-        bodyMessages.appendChild(msgContainerOwn);
-        $('.body').scrollTop($('.body')[0].scrollHeight);
+        let 
+        e_msg = $(e.target.txtMsg),
+        msg = e_msg.val();
 
-        socket.emit('msg', msg);
-    }
-})
+        if(msg) {
 
-$('.form-message').keydown(function(key) {
-    if(ready) {
-        if(key.keyCode == 8) {
-            socket.emit('deleting');
-        } else {
-            socket.emit('typing');
+            $('.body').append(msgTemplate.replace("{msg}", msg));
+
+            // socket
+            socket.emit("msg", msg);
+            e_msg.val("");
         }
-    }
-})
+    });
 
-socket.on('user join', (name) => {
-    if (ready) {
-        let divSpanAlert = document.createElement('div');
-        divSpanAlert.className = 'span-alert';
+    $('.form-message').keydown(key => {
+        if(ready) {
+            if(key.keyCode == 8) {
+                socket.emit('deleting');
+            } else {
+                socket.emit('typing');
+            }
+        } 
+    });
 
-        let pSpanAlert = document.createElement('p');
-        pSpanAlert.textContent = name + ' entrou';
+    const sign = (name, state) => {
+        if(ready) {
+            let body = $('.body');
 
-        divSpanAlert.appendChild(pSpanAlert);
-        bodyMessages.appendChild(divSpanAlert);
-        $('.body').scrollTop($('.body')[0].scrollHeight);
-    }
-})
-
-socket.on('user disconnect', (name) => {
-    if (ready) {
-        let divSpanAlert = document.createElement('div');
-        divSpanAlert.className = 'span-alert';
-
-        let pSpanAlert = document.createElement('p');
-        pSpanAlert.textContent = name + ' saiu';
-
-        divSpanAlert.appendChild(pSpanAlert);
-        bodyMessages.appendChild(divSpanAlert);
-        $('.body').scrollTop($('.body')[0].scrollHeight);
-    }
-})
-
-
-socket.on('user msg', (user, msg) => {
-    if (ready) {
-        var time = new Date();
-        userTyping.textContent = "";
-        formBoxTxt.className = "";
-
-        let msgContainernOwn = document.createElement('div');
-        let msgnOwn = document.createElement('div');
-        let msgInfo = document.createElement('div');
-        let pMsgText = document.createElement('p');
-        let pMsgUser = document.createElement('p');
-        let pMsgTime = document.createElement('p');
-
-        msgContainernOwn.className = "msg-container nown";
-        msgInfo.className = "msg-info";
-        msgnOwn.className = "msg nown";
-        pMsgUser.className = "msg-user";
-        pMsgUser.textContent = user;
-        pMsgTime.className = "msg-time";
-
-        if (time.getMinutes() < 10) pMsgTime.textContent = time.getHours() + ":0" + time.getMinutes();
-        else pMsgTime.textContent = time.getHours() + ":" + time.getMinutes();
-        
-        pMsgText.className = "msg-text";
-        pMsgText.textContent = msg;
-
-        msgInfo.appendChild(pMsgUser);
-        msgInfo.appendChild(pMsgTime);
-
-        msgnOwn.appendChild(msgInfo)
-        msgnOwn.appendChild(pMsgText);
-
-        msgContainernOwn.appendChild(msgnOwn);
-        bodyMessages.appendChild(msgContainernOwn);
-
-        $('.body').scrollTop($('.body')[0].scrollHeight);
-    }
-})
-
-socket.on('user typing', (user) => {
-    if (ready) {
-        userTyping.textContent = user + " está digitando...";
-        formBoxTxt.className = "typing";
-    }
-})
-
-socket.on('user deleting', () => {
-    if (ready) {
-        userTyping.textContent = "";
-        formBoxTxt.className = "";
-    }
-})
-
-socket.on('users update', (users) => {
-    if (ready) {
-        let i = 0;
-        userList.textContent = "";
-        for (user in users) {
-            updateUsers(users[user]);
-            i++;
+            // append elements
+            body.append(signTemplate.replace("{text}", name + " " + state));
+            body.scrollTop($('.body')[0].scrollHeight);
         }
-        if (i == 1) userLen.textContent = i + ' usuário';
-        else userLen.textContent = i + ' usuários';
+    };
+
+    socket.on('user join', (name) => sign(name, "Entrou"));
+    socket.on('user disconnect', (name) => sign(name, "Saiu"));
+    socket.on('user msg', (user, msg) => {
+        if (ready) {
+
+            let
+            time = new Date(),
+            pMsgTime = time.getMinutes() < 10 
+            ? setTime(":0", time)
+            : setTime(":", time);
+
+            $('.body').append(msgTemplateOther
+                .replace("{text}", msg)
+                .replace("{user}", user)
+                .replace("{time}", pMsgTime.split(/\s/)[1]));
+        }
+    });
+
+    socket.on('user typing', (user) => {
+        if (ready) {
+            $('.user-typing').text(user + " está digitando...");
+            $('.form-message>input').addClass("typing");
+        }
+    });
+
+    socket.on('user deleting', () => {
+        if (ready) {
+            $('.user-typing').text("");
+            $('.form-message>input').removeClass("typing");
+        }
+    });
+
+    const
+    userList = $('.sidebar-body-users'),
+    userLen = $('.header-status');
+
+    socket.on('users update', (users) => {
+        if (ready) {
+            let i = 0;
+
+            userList.text("");
+
+            for (user in users) {
+                updateUsers(users[user]);
+                i++;
+            }
+
+            let toWrite = i == 1 ? i + ' usuário' :i + ' usuários';
+
+            userLen.text(toWrite);
+        }
+    });
+
+    const updateUsers = (user) => {
+        let pUser = `<p>${user}</p>`;
+
+        userList.append(pUser);
     }
-})
-
-const updateUsers = (user) => {
-    let pUser = document.createElement('p');
-    pUser.textContent = user;
-
-    userList.appendChild(pUser);
-}
+})();
