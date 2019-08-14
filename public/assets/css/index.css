@@ -69,6 +69,7 @@ body {
 
 .sidebar {
     min-width: 300px;
+    max-width: 300px;
     background-color: #FFF;
     z-index: 1;
 }
@@ -77,6 +78,7 @@ body {
     background-color: #EFEFEF;
     display: flex;
     justify-content: flex-start;
+    text-overflow: ellipsis;
     align-items: center;
     padding: 15px;
 }
@@ -84,6 +86,16 @@ body {
 .sidebar-header > img {
     width: 40px;
     border-radius: 100%;
+}
+
+.sidebar-header > div {
+    max-width: 200px;
+}
+
+.sidebar-header > div > p, .sidebar-body-users > p, .span-alert > p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .sidebar-body > p {
@@ -126,6 +138,7 @@ body {
 
 .header {
     width: 100%;
+    height: max-content;
     padding: 15px 25px;
     background-color: #8141ca;
     display: flex;
@@ -161,7 +174,7 @@ body {
     justify-content: flex-start;
     flex-direction: column;
     padding: 20px;
-    overflow-x: auto;
+    overflow-y: auto;
 }
 
 .span-alert {
@@ -177,6 +190,8 @@ body {
     border-radius: 2px;
     /* box-shadow: 0px 3px 5px -3px rgba(0,0,0,0.75); */
     margin: 10px 0;
+    font-size: 12px;
+    max-width: 200px;
 }
 
 .msg-container {
@@ -196,6 +211,7 @@ body {
     padding: 20px;
     border-radius: 3px;
     position: relative;
+    height: max-content;
 }
 
 .msg.own {
@@ -208,10 +224,12 @@ body {
     justify-content: flex-start;
     align-items: baseline;
     margin-bottom: 10px;
+    font-size: 12px;
 }
 
 .msg-text {
     word-break: break-word;
+    font-size: 1em;
 }
 
 .msg-time {
@@ -310,5 +328,29 @@ body {
 
     .sidebar {
         display: none;
+    }
+
+    .msg-text {
+        font-size: 16px;
+    }
+
+    .header {
+        min-height: 70px;
+    }
+
+    .body {
+        overflow: auto;
+    }
+
+    .msg-container.nown {
+        min-height: 83px;
+        height: max-content;
+        min-block-size: max-content;
+    }
+
+    .msg-container.own {
+        min-height: 59px;
+        height: max-content;
+        min-block-size: max-content;
     }
 }
