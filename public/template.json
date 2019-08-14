@@ -1,0 +1,5 @@
+{
+	"msgTemplate": "<div class='msg-container own'><div class='msg own'><p class='msg-text'>{msg}</p></div></div>",
+	"signTemplate": "<div class='span-alert'><p>{text}</p></div>",
+	"msgTemplateOther": "<div class='msg-container nown'><div class='msg nown'><div class='msg-info'><p class='msg-user'>{user}</p><p class='msg-time'>{time}</p></div><p class='msg-text'>{text}</p></div></div>"
+}
