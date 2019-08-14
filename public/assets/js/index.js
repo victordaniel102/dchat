@@ -3,6 +3,10 @@
     socket = io(),
     ready = false;
 
+    let 
+    typing = false,
+    typingTimer;
+
     // templates
     const 
     { msgTemplate, signTemplate, msgTemplateOther } = await $.get("/template.json"),
@@ -41,25 +45,39 @@
         e_msg = $(e.target.txtMsg),
         msg = e_msg.val();
 
-        if(msg) {
+        if(msg.trim()) {
 
             $('.body').append(msgTemplate.replace("{msg}", msg));
+            $('.body').scrollTop($('.body')[0].scrollHeight);
 
             // socket
             socket.emit("msg", msg);
+
+            typing = false;
+            socket.emit('stopping typing');
+
             e_msg.val("");
         }
     });
 
     $('.form-message').keydown(key => {
-        if(ready) {
-            if(key.keyCode == 8) {
-                socket.emit('deleting');
-            } else {
-                socket.emit('typing');
-            }
-        } 
+        if(ready && key.keyCode != "13") { input(); }
     });
+
+    const input = () => {
+        if (!typing) {
+            typing = true;
+            socket.emit('typing');
+        }
+        if (typingTimer) {
+            clearTimeout(typingTimer);
+            typingTimer = null;
+        }
+        typingTimer = setTimeout(() => {
+            typing = false;
+            socket.emit('stopping typing');
+        }, 1000);
+    }
 
     const sign = (name, state) => {
         if(ready) {
@@ -86,6 +104,9 @@
                 .replace("{text}", msg)
                 .replace("{user}", user)
                 .replace("{time}", pMsgTime.split(/\s/)[1]));
+
+            $('.body').scrollTop($('.body')[0].scrollHeight);
+
         }
     });
 
@@ -96,7 +117,7 @@
         }
     });
 
-    socket.on('user deleting', () => {
+    socket.on('user stopped typing', () => {
         if (ready) {
             $('.user-typing').text("");
             $('.form-message>input').removeClass("typing");
