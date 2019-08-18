@@ -1,5 +1,5 @@
 {
-  "name": "socket.io-chat",
+  "name": "dchat",
   "version": "1.0.0",
   "description": "Chat em tempo real com socket.io",
   "main": "server.js",
@@ -19,12 +19,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/victordaniel102/socket.io-chat.git"
+    "url": "git+https://github.com/victordaniel102/dchat.git"
   },
-  "author": "",
+  "author": "D. Victor",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/victordaniel102/socket.io-chat/issues"
+    "url": "https://github.com/victordaniel102/dchat/issues"
   },
-  "homepage": "https://github.com/victordaniel102/socket.io-chat#readme"
+  "homepage": "https://github.com/victordaniel102/dchat#readme"
 }
