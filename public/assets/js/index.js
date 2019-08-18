@@ -47,6 +47,8 @@
 
         if(msg.trim()) {
 
+            msg = linkify(msg)
+
             $('.body').append(msgTemplate.replace("{msg}", msg));
             $('.body').scrollTop($('.body')[0].scrollHeight);
 
@@ -89,8 +91,8 @@
         }
     };
 
-    socket.on('user join', (name) => sign(name, "Entrou"));
-    socket.on('user disconnect', (name) => sign(name, "Saiu"));
+    socket.on('user join', (name) => sign(name, "entrou"));
+    socket.on('user disconnect', (name) => sign(name, "saiu"));
     socket.on('user msg', (user, msg) => {
         if (ready) {
 
@@ -149,5 +151,12 @@
         let pUser = `<p>${user}</p>`;
 
         userList.append(pUser);
+    }
+
+    const linkify = (text) => {
+        var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+        return text.replace(urlRegex, function(url) {
+            return '<a target="_blank" href="' + url + '">' + url + '</a>';
+        });
     }
 })();

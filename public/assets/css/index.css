@@ -9,7 +9,7 @@
 
 @font-face {
     font-family: 'Roboto';
-    src: url('../fonts/Roboto.ttf');
+    src: url('../webfonts/Roboto.ttf');
 }
 
 body {
@@ -281,7 +281,6 @@ body {
     border: none;
     padding: 15px;
     flex-grow: 1;
-    /* box-shadow: 0px 3px 5px -3px rgba(0,0,0,0.75); */
     transition: 0.2s;
 }
 
@@ -294,7 +293,8 @@ body {
     height: 46px;
     border-radius: 100%;
     background-color: #8141ca;
-    /* box-shadow: 0px 3px 5px -3px rgba(0,0,0,0.75); */
+    box-shadow: 0px 3px 5px -3px rgba(0,0,0,0.75);
+    transition: 0.2s;
     border: none;
     color: white;
     display: flex;
@@ -302,6 +302,11 @@ body {
     align-items: center;
     margin-left: 20px;
     right: 0;
+    cursor: pointer;
+}
+
+.btn-submit:active {
+    box-shadow: none;
 }
 
 .user-typing {
